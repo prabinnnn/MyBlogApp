@@ -1,4 +1,3 @@
-import React from "react";
 
 const BlogList = () => {
   return (
@@ -29,7 +28,7 @@ const BlogList = () => {
                     <td rowSpan="1">
                       How to be a super good and efficient developer? Part 20
                     </td>
-                    <td>Raktim Shrestha</td>
+                    <td>Prabin bhandari</td>
                     <td>
                       <div className="d-flex align-self-start">
                         <label className="form-check-label">Draft&nbsp;</label>

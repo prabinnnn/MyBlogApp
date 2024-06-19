@@ -1,6 +1,5 @@
 import instance from "../utils/axios";
 import { APIs } from "../constants";
-
 export const login = (payload) => {
   return instance.post(APIs.USERS + "/login", payload);
 };
@@ -20,6 +19,21 @@ export const generateFPToken = (payload) => {
 export const verifyFPToken = (payload) => {
   return instance.post(APIs.USERS + "/verify-fp-token", payload);
 };
+
+export const blockUser = (email) => {
+  return instance.patch(
+    `${APIs.USERS}/block-user`,
+    {
+      email,
+    },
+    {
+      headers: {
+        access_token: localStorage.getItem("access_token"),
+      },
+    }
+  );
+};
+
 
 export const getAllUsers = ({ limit, page, name }) => {
   return instance.get(
@@ -56,16 +70,42 @@ export const getProfile = () => {
   });
 };
 
-export const blockUser = (email) => {
-  return instance.patch(
-    `${APIs.USERS}/block-user`,
-    {
-      email,
+export const updateUserService = (payload) => {
+  return instance.put(`${APIs.USERS}/${payload.id}`, payload, {
+    headers: {
+      access_token: localStorage.getItem("access_token"),
     },
-    {
-      headers: {
-        access_token: localStorage.getItem("access_token"),
-      },
-    }
-  );
+  });
+};
+
+export const changePasswordService = (payload) => {
+  return instance.post(`${APIs.USERS}/change-password`, payload, {
+    headers: {
+      access_token: localStorage.getItem("access_token"),
+    },
+  });
+};
+
+export const resetPasswordService = (payload) => {
+  return instance.post(`${APIs.USERS}/reset-password`, payload, {
+    headers: {
+      access_token: localStorage.getItem("access_token"),
+    },
+  });
+};
+
+export const deleteUserService = (id) => {
+  return instance.delete(`${APIs.USERS}/${id}`, {
+    headers: {
+      access_token: localStorage.getItem("access_token"),
+    },
+  });
+};
+
+export const deleteProfile = () => {
+  return instance.delete(`${APIs.USERS}/delete-profile`, {
+    headers: {
+      access_token: localStorage.getItem("access_token"),
+    },
+  });
 };
