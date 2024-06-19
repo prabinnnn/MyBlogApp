@@ -5,6 +5,9 @@ import {
   getOneUser,
   addUser,
   blockUser,
+  deleteUser as deleteUserService,
+  changePassword as changePasswordService,
+  resetPassword as resetPasswordService,
 } from "../services/users";
 
 const initialState = {
@@ -45,7 +48,6 @@ export const userProfile = createAsyncThunk("users/userProfile", async () => {
   return res.data;
 });
 
-// user block
 export const changeStatus = createAsyncThunk(
   "users/changeStatus",
   async (email) => {
@@ -53,15 +55,32 @@ export const changeStatus = createAsyncThunk(
     return res.data;
   }
 );
-// update user
+
 export const updateUser = createAsyncThunk("users/updateUser", async () => {
   const res = await getProfile(); // TODO
   return res.data;
 });
 
-// change password
-// reset password
-// delete user
+export const changePassword = createAsyncThunk(
+  "users/changePassword",
+  async (payload) => {
+    const res = await changePasswordService(payload);
+    return res.data;
+  }
+);
+
+export const resetPassword = createAsyncThunk(
+  "users/resetPassword",
+  async (payload) => {
+    const res = await resetPasswordService(payload);
+    return res.data;
+  }
+);
+
+export const deleteUser = createAsyncThunk("users/deleteUser", async (id) => {
+  const res = await deleteUserService(id);
+  return res.data;
+});
 
 const userSlice = createSlice({
   initialState,
@@ -154,6 +173,17 @@ const userSlice = createSlice({
       .addCase(updateUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(deleteUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.users = state.users.filter(user => user.id !== action.meta.arg);
+      })
+      .addCase(deleteUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
   },
 });
@@ -161,3 +191,4 @@ const userSlice = createSlice({
 export const { setCurrentPage, setLimit } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;
+
