@@ -1,4 +1,4 @@
-
+import React from "react";
 import LogoImg from "../assets/logo.png";
 
 export const BlogLoader = () => {

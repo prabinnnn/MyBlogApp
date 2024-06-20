@@ -13,34 +13,28 @@ import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 
 import { cartReducer } from "../slices/cartSlice";
-import userSlice from "../slices/userSlice"; // Assuming userSlice is correctly exported with reducer and actions
+import { userReducer } from "../slices/userSlice";
 
 const persistCartConfig = {
-  key: "mb-cart", // Unique key for the cart slice in storage
-  storage, // Storage engine to use (localStorage in this case)
-  stateReconciler: autoMergeLevel2, // How to reconcile state when merging
+  key: "mb-cart",
+  storage,
+  stateReconciler: autoMergeLevel2,
 };
 
 const persistCart = persistReducer(persistCartConfig, cartReducer);
 
-const rootReducer = {
-  cart: persistCart,
-  users: userSlice, // Assuming userSlice correctly exports the reducer
-};
-
 export const store = configureStore({
-  reducer: rootReducer,
+  reducer: {
+    cart: persistCart,
+    users: userReducer,
+  },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE], // Ignore non-serializable actions
+        ignoreActions: [FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE],
       },
     }),
-  devTools: true, // Enable Redux DevTools Extension
+  devTools: true,
 });
 
-export const persistor = persistStore(store); // Persist the store
-
-export default { store, persistor }; // Exporting an object with store and persistor
-export { store as newStore }; // Exporting store as newStore
-
+export const newStore = persistStore(store);
