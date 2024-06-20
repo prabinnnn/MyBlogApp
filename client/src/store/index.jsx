@@ -1,53 +1,44 @@
-import { configureStore } from "@reduxjs/toolkit";
-import {
-  persistStore,
-  persistReducer,
-  FLUSH,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-  REHYDRATE,
-} from "redux-persist";
-import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
+import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
 
 import { cartReducer } from "../slices/cartSlice";
 import { userReducer } from "../slices/userSlice";
-import { adminReducer } from "../slices/adminSlice";
+import { blogReducer } from "../slices/blogSlice";
 
-// Persist configuration for cart
+// Persist configuration for cart reducer
 const persistCartConfig = {
   key: "mb-cart",
   storage,
   stateReconciler: autoMergeLevel2,
 };
 
-const persistCart = persistReducer(persistCartConfig, cartReducer);
+const persistedCartReducer = persistReducer(persistCartConfig, cartReducer);
 
-// Persist configuration for admin
-const persistAdminConfig = {
-  key: "mb-admin",
+// Persist configuration for blog reducer
+const persistBlogConfig = {
+  key: "mb-blog",
   storage,
   stateReconciler: autoMergeLevel2,
 };
 
-const persistAdmin = persistReducer(persistAdminConfig, adminReducer);
+const persistedBlogReducer = persistReducer(persistBlogConfig, blogReducer);
 
 // Configure the Redux store
 export const store = configureStore({
   reducer: {
-    cart: persistCart,
+    cart: persistedCartReducer,
     users: userReducer,
-    admin: persistAdmin,
+    blogs: persistedBlogReducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
+  middleware: [
+    ...getDefaultMiddleware({
       serializableCheck: {
-        ignoreActions: [FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE],
+        ignoredActions: ["persist/PERSIST"],
       },
     }),
-  devTools: true,
+  ],
+  devTools: true, 
 });
-
-export const newStore = persistStore(store);
+export const persistor = persistStore(store);

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -11,34 +11,22 @@ const UserDetail = () => {
   const dispatch = useDispatch();
   const [payload, setPayload] = useState({});
 
-  // Fetch user data by ID on component mount
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(payload);
+    navigate("/admin/users");
+  };
   const initFetch = useCallback(() => {
     dispatch(getById(id));
   }, [dispatch, id]);
 
-  // Initialize fetch on component mount
   useEffect(() => {
     initFetch();
   }, [initFetch]);
 
-  // Update local state when user data changes
   useEffect(() => {
     setPayload(user);
   }, [user]);
-
-  // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(updateUser(payload)) // Dispatch updateUser action with updated user data
-      .then(() => {
-        navigate("/admin/users"); // Navigate to user list page on successful update
-      })
-      .catch((err) => {
-        console.error("Failed to update user:", err);
-        // Handle error (optional): You can set an error state here
-      });
-  };
-
   return (
     <div className="container mt-5 d-grid gap-4">
       <div className="d-flex justify-content-between">
@@ -48,7 +36,7 @@ const UserDetail = () => {
       <div className="d-flex">
         <div className="card w-100 shadow">
           <div className="card-body">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={(e) => handleSubmit(e)}>
               <div className="mb-3">
                 <label className="form-label">Name</label>
                 <input
@@ -107,4 +95,3 @@ const UserDetail = () => {
 };
 
 export default UserDetail;
-
