@@ -14,7 +14,9 @@ import storage from "redux-persist/lib/storage"; // defaults to localStorage for
 
 import { cartReducer } from "../slices/cartSlice";
 import { userReducer } from "../slices/userSlice";
+import { adminReducer } from "../slices/adminSlice";
 
+// Persist configuration for cart
 const persistCartConfig = {
   key: "mb-cart",
   storage,
@@ -23,10 +25,21 @@ const persistCartConfig = {
 
 const persistCart = persistReducer(persistCartConfig, cartReducer);
 
+// Persist configuration for admin
+const persistAdminConfig = {
+  key: "mb-admin",
+  storage,
+  stateReconciler: autoMergeLevel2,
+};
+
+const persistAdmin = persistReducer(persistAdminConfig, adminReducer);
+
+// Configure the Redux store
 export const store = configureStore({
   reducer: {
     cart: persistCart,
     users: userReducer,
+    admin: persistAdmin,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

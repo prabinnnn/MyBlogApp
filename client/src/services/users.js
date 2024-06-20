@@ -78,3 +78,20 @@ export const blockUser = (email) => {
     }
   );
 };
+export const changePassword = (payload) => {
+  return instance.put(APIs.USERS + "/change-password", payload, {
+    headers: {
+      access_token: localStorage.getItem("access_token"),
+    },
+  });
+};
+export const resetPassword = (payload) => {
+  return instance.put(APIs.USERS + "/reset-password", payload);
+};
+export const deleteUser = (userId) => {
+  return instance.delete(`${APIs.USERS}/${userId}`, {
+    headers: {
+      access_token: localStorage.getItem("access_token"),
+    },
+  });
+};

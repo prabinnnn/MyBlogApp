@@ -244,8 +244,7 @@ const userSlice = createSlice({
 });
 
 export const { setCurrentPage, setLimit } = userSlice.actions;
-
 export const selectUsers = (state) => state.users;
-
+export const userReducer = userSlice.reducer;
 export default userSlice.reducer;
 

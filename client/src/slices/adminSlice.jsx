@@ -63,5 +63,5 @@ const adminSlice = createSlice({
       });
   },
 });
-
+export const adminReducer = adminSlice.reducer;
 export default adminSlice.reducer;
