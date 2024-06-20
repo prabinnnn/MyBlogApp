@@ -55,6 +55,15 @@ export const getProfile = () => {
     },
   });
 };
+export const updateUserProfile = async (updatedUserData) => {
+  const { id, ...rest } = updatedUserData; // Assuming updatedUserData contains user id and updated fields
+  const response = await instance.put(`${APIs.USERS}/${id}`, rest, {
+    headers: {
+      access_token: localStorage.getItem("access_token"),
+    },
+  });
+  return response.data;
+};
 
 export const blockUser = (email) => {
   return instance.patch(
