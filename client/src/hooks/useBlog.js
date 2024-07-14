@@ -1,43 +1,37 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import instance from "../utils/axios"; // Adjust path as needed
+import { APIs } from "../constants"; // Adjust path as needed
 
-import { publishedBlogs } from "../services/blogs";
-
-const useBlog = ({ title, sort }) => {
-  // Replace this entire code with tanstack query
-  const [data, setData] = useState([]);
-  const [error, setError] = useState("");
+const useBlog = ({ title = "", sort = "" }) => {
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
-  const [limit, setLimit] = useState(8);
-  const [currentPage, setCurrentPage] = useState(1);
   const [total, setTotal] = useState(0);
+  const [limit, setLimit] = useState(20); // Default limit
+  const [currentPage, setCurrentPage] = useState(1); // Default current page
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
-        const { data, msg } = await publishedBlogs({
-          title,
-          sort,
-          page: currentPage,
-          limit,
-        });
-        setMsg(msg);
-        setData(data?.data);
-        setTotal(data?.data?.total);
-      } catch (e) {
-        const err = e?.response?.data?.msg || "something went wrong";
-        setError(err);
+        const response = await instance.get(
+          APIs.BLOGS +
+            `/published-only?title=${title}&sortBy=${sort}&limit=${limit}&page=${currentPage}`
+        );
+        setData(response.data);
+        setTotal(response.data.total); // Assuming total is returned in response
+        setMsg(""); // Clear any previous error messages
+      } catch (error) {
+        setError(error);
+        setMsg("Error fetching blogs"); // Set error message
       } finally {
         setLoading(false);
-        setTimeout(() => {
-          setError("");
-          setMsg("");
-        }, 3000);
       }
     };
+
     fetchData();
-  }, [title, limit, currentPage, sort]);
+  }, [title, sort, limit, currentPage]);
 
   return {
     data,

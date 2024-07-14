@@ -1,4 +1,4 @@
-import { useContext, createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import useBlog from "../hooks/useBlog";
 
 const BlogContext = createContext(null);
@@ -21,27 +21,26 @@ export const BlogContextProvider = ({ children }) => {
     title,
     sort,
   });
+
   return (
-    <>
-      <BlogContext.Provider
-        value={{
-          blogs: data?.data,
-          loading,
-          error,
-          msg,
-          limit,
-          currentPage,
-          total,
-          setTitle,
-          setSort,
-          setLimit,
-          setCurrentPage,
-          setTotal,
-        }}
-      >
-        {children}
-      </BlogContext.Provider>
-    </>
+    <BlogContext.Provider
+      value={{
+        blogs: data?.data,
+        loading,
+        error,
+        msg,
+        limit,
+        currentPage,
+        total,
+        setTitle,
+        setSort,
+        setLimit,
+        setCurrentPage,
+        setTotal,
+      }}
+    >
+      {children}
+    </BlogContext.Provider>
   );
 };
 

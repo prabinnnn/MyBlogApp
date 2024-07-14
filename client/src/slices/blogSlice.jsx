@@ -14,9 +14,9 @@ export const getBlogById = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const response = await fetchBlogById(id);
-      return response.data;
+      return response;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
@@ -27,9 +27,9 @@ export const createBlog = createAsyncThunk(
   async (blogData, { rejectWithValue }) => {
     try {
       const response = await createNewBlog(blogData);
-      return response.data;
+      return response;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
@@ -69,6 +69,5 @@ const blogSlice = createSlice({
   },
 });
 
-export const {setCurrentPage, setLimit } = blogSlice.actions; 
 export const blogReducer = blogSlice.reducer;
 export default blogReducer;

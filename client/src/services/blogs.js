@@ -1,3 +1,5 @@
+// services/blogService.js
+
 import instance from "../utils/axios";
 import { APIs } from "../constants";
 
@@ -32,7 +34,7 @@ export const getBlogBySlug = async (slug) => {
 };
 
 // Function to fetch a blog by its ID
-export const getBlogById = async (id) => {
+export const fetchBlogById = async (id) => {
   // eslint-disable-next-line no-useless-catch
   try {
     const response = await instance.get(APIs.BLOGS + `/id/${id}`);
@@ -43,7 +45,7 @@ export const getBlogById = async (id) => {
 };
 
 // Function to create a new blog
-export const createBlog = async (blogData) => {
+export const createNewBlog = async (blogData) => {
   // eslint-disable-next-line no-useless-catch
   try {
     const response = await instance.post(APIs.BLOGS, blogData);

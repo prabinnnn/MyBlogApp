@@ -1,27 +1,24 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-
 import React from "react";
-import ReactDOM from "react-dom/client";
+import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
-import App from "./App.jsx";
-import { BlogContextProvider } from "./contexts/BlogContext";
 import { Provider } from "react-redux";
-import { newStore, store } from "./store";
-import BlogDetail from "./pages/BlogDetail.jsx";
-import BlogAdd from "./pages/admin/blogs/Add.jsx";
 import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./store";
+import App from "./App";
+import { BlogContextProvider } from "./contexts/BlogContext"; // Import BlogContextProvider
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+const rootElement = document.getElementById("root");
+
+ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
     <Provider store={store}>
-      <PersistGate loading={null} persistor={newStore}>
-        <BrowserRouter>
-          <BlogContextProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <BlogContextProvider> {/* Wrap around Provider and PersistGate */}
+          <BrowserRouter>
             <App />
-            <BlogDetail/>
-            <BlogAdd />
-          </BlogContextProvider>
-        </BrowserRouter>
+          </BrowserRouter>
+        </BlogContextProvider>
       </PersistGate>
     </Provider>
   </React.StrictMode>
