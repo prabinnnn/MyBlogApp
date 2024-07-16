@@ -12,6 +12,8 @@ export const Paginate = ({
   let active = currentPage;
   let items = [];
   const totalNumberOfPages = Math.ceil(total / limit);
+  
+  // Populate items array for page numbers
   for (let number = 1; number <= totalNumberOfPages; number++) {
     items.push(
       <Pagination.Item
@@ -24,6 +26,7 @@ export const Paginate = ({
     );
   }
 
+  // Fetch pagination range from hook
   const paginationRange = usePagination({
     currentPage,
     totalCount: total,
@@ -31,8 +34,9 @@ export const Paginate = ({
     siblingCount: 1,
   });
 
-  if (currentPage === 0 || paginationRange.length < 2) {
-    return null;
+  // Handle cases where paginationRange is not properly initialized
+  if (!paginationRange || paginationRange.length < 2) {
+    return null; // or handle loading state appropriately
   }
 
   return (
