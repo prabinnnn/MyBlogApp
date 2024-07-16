@@ -7,6 +7,7 @@ import Footer from '../components/footer'; // Adjusted import for Footer compone
 import NavigationBar from '../components/navigationBar'; // Adjusted import for NavigationBar component
 import { useBlogContext } from '../contexts/BlogContext';
 import { Paginate } from '../components/Paginate';
+import hompageImage from '../assets/hompage.png'; // Importing hompage image from assets
 
 const HomePage = () => {
   const { pageNo } = useParams();
@@ -31,7 +32,7 @@ const HomePage = () => {
   }
 
   if (error) {
-    return <h1 className="text-center">{error}</h1>;
+    return <h1 className="text-center">{error.message}</h1>;
   }
 
   return (
@@ -44,12 +45,12 @@ const HomePage = () => {
             <Card
               name="Example Blog Title"
               id="example-blog-id"
-              image="https://example.com/example.jpg" // Replace with your example image URL
+              image={hompageImage} // Pass imported image as the image prop
             />
           </Col>
-
-          {/* Render blogs dynamically */}
-          {blogs?.map(blog => (
+          
+          {/* Render other blog cards dynamically */}
+          {blogs && blogs.length > 0 ? blogs.map(blog => (
             <Col key={blog.id} md={4} sm={6} xs={12}>
               <Card
                 name={blog.title}
@@ -57,13 +58,15 @@ const HomePage = () => {
                 image={`https://joeschmoe.io/api/v1/${blog.id}`} // Example URL, adjust as per your API response
               />
             </Col>
-          ))}
+          )) : (
+            <h2 className="text-center">No blogs available</h2>
+          )}
         </Row>
         <Paginate
-          total={total}
+          total={total || 0}
           setCurrentPage={setCurrentPage}
-          currentPage={currentPage}
-          limit={limit}
+          currentPage={currentPage || 1}
+          limit={limit || 20}
           setLimit={setLimit}
         />
       </Container>
@@ -73,3 +76,4 @@ const HomePage = () => {
 };
 
 export default HomePage;
+

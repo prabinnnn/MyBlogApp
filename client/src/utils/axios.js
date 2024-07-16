@@ -1,9 +1,7 @@
-// axios.js
-
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL:  'https://joeschmoe.io/api/v1/',  // Replace with your actual API base URL
+  baseURL: '/',  // Use relative URL since Vite proxy will handle it
   timeout: 5000,  // Timeout after 5 seconds
   headers: {
     'Content-Type': 'application/json',

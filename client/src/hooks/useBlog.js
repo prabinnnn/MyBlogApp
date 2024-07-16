@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import instance from "../utils/axios"; // Adjust path as needed
-import { APIs } from "../constants"; // Adjust path as needed
+import instance from "../utils/axios";
+import { APIs } from "../constants";
 
 const useBlog = ({ title = "", sort = "" }) => {
   const [data, setData] = useState(null);
@@ -8,8 +8,8 @@ const useBlog = ({ title = "", sort = "" }) => {
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
   const [total, setTotal] = useState(0);
-  const [limit, setLimit] = useState(20); // Default limit
-  const [currentPage, setCurrentPage] = useState(1); // Default current page
+  const [limit, setLimit] = useState(20);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,12 +20,12 @@ const useBlog = ({ title = "", sort = "" }) => {
             `/published-only?title=${title}&sortBy=${sort}&limit=${limit}&page=${currentPage}`
         );
         setData(response.data);
-        setTotal(response.data.total); // Assuming total is returned in response
-        setMsg(""); // Clear any previous error messages
-        setError(null); // Clear any previous errors on success
+        setTotal(response.data.total);
+        setMsg("");
+        setError(null);
       } catch (error) {
-        setError(error); // Capture the error
-        setMsg("Error fetching blogs"); // Set error message
+        setError(error);
+        setMsg("Error fetching blogs");
       } finally {
         setLoading(false);
       }
@@ -49,4 +49,3 @@ const useBlog = ({ title = "", sort = "" }) => {
 };
 
 export default useBlog;
-
