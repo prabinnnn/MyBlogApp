@@ -22,8 +22,9 @@ const useBlog = ({ title = "", sort = "" }) => {
         setData(response.data);
         setTotal(response.data.total); // Assuming total is returned in response
         setMsg(""); // Clear any previous error messages
+        setError(null); // Clear any previous errors on success
       } catch (error) {
-        setError(error);
+        setError(error); // Capture the error
         setMsg("Error fetching blogs"); // Set error message
       } finally {
         setLoading(false);
@@ -48,3 +49,4 @@ const useBlog = ({ title = "", sort = "" }) => {
 };
 
 export default useBlog;
+

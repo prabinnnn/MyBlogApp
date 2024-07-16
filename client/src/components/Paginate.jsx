@@ -1,3 +1,4 @@
+import React from 'react';
 import Pagination from "react-bootstrap/Pagination";
 import { usePagination, DOTS } from "../hooks/usePagination";
 

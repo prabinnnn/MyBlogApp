@@ -1,8 +1,6 @@
 import { Routes, Route } from "react-router-dom";
-
 import UserLayout from "./layouts/UserLayout";
 import AdminLayout from "./layouts/AdminLayout";
-
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import ForgetPassword from "./pages/ForgetPassword";
@@ -14,11 +12,9 @@ import About from "./pages/About";
 import Blogs from "./pages/Blogs";
 import BlogDetail from "./pages/BlogDetail";
 import { Bookmarks } from "./pages/Bookmarks";
-// Admin Pages
 import BlogList from "./pages/admin/blogs/List";
 import UserList from "./pages/admin/users/List";
 import Profile from "./pages/admin/users/Profile";
-
 import PrivateRoute from "./components/PrivateRoute";
 import UserDetail from "./pages/admin/users/Detail";
 import UserAdd from "./pages/admin/users/Add";
@@ -31,6 +27,7 @@ function App() {
         <Route path="/forget-password" element={<ForgetPassword />} />
         <Route path="/verify-password" element={<VerifyPassword />} />
         <Route path="/register" element={<Register />} />
+        
         {/* User Routes */}
         <Route path="/" element={<UserLayout />}>
           <Route index element={<Home />} />
@@ -39,7 +36,9 @@ function App() {
           <Route path="blogs/:id" element={<BlogDetail />} />
           <Route path="bookmarks" element={<Bookmarks />} />
           <Route path="contact" element={<Contact />} />
+          <Route path="page/:pageNo" element={<Home />} /> {/* Updated to include page number */}
         </Route>
+        
         {/* Admin Routes */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route
@@ -91,6 +90,7 @@ function App() {
             }
           />
         </Route>
+        
         {/* Error Routing */}
         <Route path="*" element={<NotFound />} />
       </Routes>
@@ -99,3 +99,4 @@ function App() {
 }
 
 export default App;
+
